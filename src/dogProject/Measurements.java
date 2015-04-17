@@ -35,7 +35,7 @@ public class Measurements
 		Motor.C.rotate(-degrees,false);
 	}
 	
-	static int LIFT_DEGREE = 65;
+	static int LIFT_DEGREE = 80;
 	public static void liftUp()
 	{
 		Motor.A.rotate(-LIFT_DEGREE);
