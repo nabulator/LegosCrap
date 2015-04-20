@@ -30,7 +30,6 @@ public class BlueCrap {
 
 			LCD.clear();
 			LCD.drawString(closing, 0, 0);
-
 			connection.close();
 			LCD.clear();
 		}
