@@ -8,7 +8,6 @@ import lejos.nxt.comm.*;
 public class BlueTeeth {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		String name = "Group 6";
 		LCD.drawString("Connecting...", 0, 8);
 		RemoteDevice r = Bluetooth.getKnownDevice(name);
