@@ -18,14 +18,16 @@ public class Recieve
 		String closing = "Closing...";
 		UltrasonicSensor ss = new UltrasonicSensor(SensorPort.S1);
 
-		while (true) {
-			LCD.drawString(waiting, 0, 0);
-			NXTConnection connection = Bluetooth.waitForConnection();
-			LCD.clear();
-			LCD.drawString(connected, 0, 0);
+		LCD.drawString(waiting, 0, 0);
+		NXTConnection connection = Bluetooth.waitForConnection();
+		LCD.clear();
+		LCD.drawString(connected, 0, 0);
 
-			DataInputStream dis = connection.openDataInputStream();
-			DataOutputStream dos = connection.openDataOutputStream();
-		}
+		Battleship game = new Battleship();
+		
+		DataInputStream dis = connection.openDataInputStream();
+		DataOutputStream dos = connection.openDataOutputStream();
+		
+		
 	}
 }
