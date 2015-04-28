@@ -9,7 +9,7 @@ import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.comm.Bluetooth;
 import lejos.nxt.comm.NXTConnection;
 
-public class Recieve 
+public class Robot 
 {
 	public static void main(String[] args)
 	{
@@ -23,11 +23,11 @@ public class Recieve
 		LCD.clear();
 		LCD.drawString(connected, 0, 0);
 
-		Battleship game = new Battleship();
+		Player game = new Player();
 		
 		DataInputStream dis = connection.openDataInputStream();
 		DataOutputStream dos = connection.openDataOutputStream();
 		
-		
+		System.out.println("THIS iS A ROBOT! ");
 	}
 }

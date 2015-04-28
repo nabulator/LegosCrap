@@ -3,13 +3,18 @@ package numberGame;
 import lejos.nxt.*;
 import lejos.robotics.Color;
 
-public class TryStuff 
+/**
+ * Completely useless GUI tester
+ * @author 60129
+ *
+ */
+public class Tester 
 {
 	public static void main(String[] args)
 	{
-		Battleship test = new Battleship();
+		Player test = new Player();
 		test.init();
-		test.myTurn();
+		test.draw();
 		
 		Button.waitForAnyPress();
 	}
