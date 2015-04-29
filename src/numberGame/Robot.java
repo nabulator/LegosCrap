@@ -1,9 +1,12 @@
 package numberGame;
 
+import java.awt.Point;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 import lejos.nxt.LCD;
+import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
 import lejos.nxt.comm.Bluetooth;
@@ -11,12 +14,10 @@ import lejos.nxt.comm.NXTConnection;
 
 public class Robot 
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException, InterruptedException
 	{
 		String connected = "Connected";
 		String waiting = "Waiting...";
-		String closing = "Closing...";
-		UltrasonicSensor ss = new UltrasonicSensor(SensorPort.S1);
 
 		LCD.drawString(waiting, 0, 0);
 		NXTConnection connection = Bluetooth.waitForConnection();
@@ -29,5 +30,45 @@ public class Robot
 		DataOutputStream dos = connection.openDataOutputStream();
 		
 		System.out.println("THIS iS A ROBOT! ");
+		
+	    game.init();
+	    
+	    Motor.B.setAcceleration(50);
+	    Motor.C.setAcceleration(50);
+	    
+	    boolean isAliveOpp = true;
+	    while( game.isAlive() && isAliveOpp )
+	    {
+	    	int xOpp = dis.readInt();
+	    	int yOpp = dis.readInt();
+	    	
+	    	Point pOpp = new Point(xOpp, yOpp);
+	    	boolean isalreadyhit = game.recieveHit(pOpp);
+	    	dos.writeBoolean( isalreadyhit );
+	    	dos.writeBoolean( game.isAlive() );
+	    	dos.flush();
+	    	
+	    	if(isalreadyhit)
+	    	{
+	    		Motor.B.rotate(180, true);
+	    		Motor.C.rotate(180);
+	    	}
+	    	
+	    	if( ! game.isAlive() )
+	    		break;
+	    	
+	    	Thread.sleep(1000);
+	    	
+	    	Point p = game.AITurn();
+	    	dos.writeInt( p.x );
+	    	dos.writeInt( p.y );
+	    	dos.flush();
+	    	
+	    	boolean isHit = dis.readBoolean();
+	    	isAliveOpp = dis.readBoolean();
+	    	
+	    	game.updateOppBoard(p, isHit);
+	    	
+	    }
 	}
 }

@@ -14,7 +14,7 @@ public class Tester
 	{
 		Player test = new Player();
 		test.init();
-		test.draw();
+		test.myTurn();
 		
 		Button.waitForAnyPress();
 	}

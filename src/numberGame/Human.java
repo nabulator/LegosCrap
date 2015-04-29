@@ -1,7 +1,9 @@
 package numberGame;
 
+import java.awt.Point;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 import javax.bluetooth.RemoteDevice;
 
@@ -12,9 +14,11 @@ import lejos.nxt.comm.Bluetooth;
 
 public class Human 
 {
-	public static void main(String[] args)
+	public static boolean myTurn = true;
+	
+	public static void main(String[] args) throws IOException, InterruptedException
 	{
-		String name = "Group 6";
+		String name = "Group 8";
 		LCD.drawString("Connecting...", 0, 8);
 		RemoteDevice r = Bluetooth.getKnownDevice(name);
 		
@@ -41,5 +45,46 @@ public class Human
 	    
 		LCD.clear();
 	    LCD.drawString("THIS IS A HUMAN!!!", 0, 0);
-	}
+	    
+	    Player game = new Player();
+	    game.init();
+	    
+	    boolean isAliveOpp = true;
+	    while( game.isAlive() && isAliveOpp )
+	    {
+	    	Point p = game.myTurn();
+	    	dos.writeInt( p.x );
+	    	dos.writeInt( p.y );
+	    	dos.flush();
+	    	
+	    	boolean isHit = dis.readBoolean();
+	    	isAliveOpp = dis.readBoolean();
+	    	
+	    	game.updateOppBoard(p, isHit);
+	    	
+	    	if( ! isAliveOpp )
+	    		break;
+	    	
+	    	Thread.sleep(1000);
+	    	
+	    	int xOpp = dis.readInt();
+	    	int yOpp = dis.readInt();
+	    	
+	    	Point pOpp = new Point(xOpp, yOpp);
+	    	boolean isalreadyhit = game.recieveHit(pOpp);
+	    	dos.writeBoolean( isalreadyhit );
+	    	dos.writeBoolean( game.isAlive() );
+	    	dos.flush();
+	    }
+	    
+	    LCD.clear();
+	    if( game.isAlive() )
+	    	LCD.drawString("YOU WON!!!!", 3, 4);
+	    else
+	    	LCD.drawString("You suck", 3, 4);
+	    
+	    Thread.sleep(3000);
+	    
+	    Button.waitForAnyPress();
+	}	
 }

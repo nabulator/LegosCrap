@@ -18,25 +18,22 @@ public class Player
 	public final int DIST_NAME_TO_BOARD= 2;
 	public final int DIST_OPP_TO_MYBOARD = 7;
 	
+	private int shipsRemaining;
 	/**
 	 * Initializes the tables
 	 */
 	public void init()
 	{
-		//int 0 is unknown, int 1 is empty, int 2 is ship
+		myBoard = new States[4][4];
 		oppBoard = new States[4][4];
 		for(int r=0; r<4; r++ ) 
 			for( int c=0; c<4; c++) 
+			{
 				oppBoard[c][r] = States.UNKNOWN;
-		
-		LCD.drawString("ASFDF", 1, 1);
-		
-		//int 0 is empty spot, int 1 is ship, int 2 is broken ship
-		myBoard = new States[4][4];
-		int count = 0;
-		for(int r=0; r<4; r++ ) 
-			for( int c=0; c<4; c++) 
 				myBoard[c][r] = States.EMPTY;
+			}
+				
+		int count = 0;
 		while(count < 4)
 		{
 			int col = (int)(Math.random() * 4);
@@ -48,6 +45,8 @@ public class Player
 				count++;
 			}
 		}
+		
+		shipsRemaining = 4;
 	}
 	
 	/**
@@ -60,6 +59,7 @@ public class Player
 		while(Button.ENTER.isUp())
 		{
 			this.draw();
+			LCD.drawString("My turn", 7, 7);
 			LCD.drawChar('/', x + DIST_OPP_TO_MYBOARD, y + DIST_NAME_TO_BOARD);
 
 			if(Button.RIGHT.isDown())
@@ -98,6 +98,18 @@ public class Player
 		return new Point(x, y);
 	}
 	
+	public Point AITurn()
+	{
+		int x, y;
+		do{
+			x = (int)(Math.random() * 4);
+			y = (int)(Math.random() * 4);
+		}
+		while(oppBoard[x][y] != States.UNKNOWN);
+		
+		return new Point(x, y);
+	}
+	
 	/**
 	 * Check if oppoent's board was hit
 	 * @param p Poibnt
@@ -109,27 +121,32 @@ public class Player
 			oppBoard[p.x][p.y] = States.HIT;
 		else
 			oppBoard[p.x][p.y] = States.EMPTY;
-			
+		
+		draw();
 	}
 	
 	/**
 	 * Checks if own board was hit
-	 * @param x
-	 * @param y
+	 * @param p
 	 * @return
 	 */
-	public boolean recieveHit(int x, int y)
+	public boolean recieveHit( Point p )
 	{
-		States p = myBoard[x][y];
-		if(p == States.EMPTY)
+		States s = myBoard[p.x][p.y];
+		if(s == States.EMPTY)
 			return false;
 		else
 		{
-			myBoard[x][y] = States.HIT;
+			myBoard[p.x][p.y] = States.HIT;
+			shipsRemaining--;
+			draw();
 			return true;
-		}
+		}		
 	}
 	
+	/**
+	 * Updates the screen appropiately
+	 */
 	public void draw()
 	{	
 		//Draw my board
@@ -150,4 +167,8 @@ public class Player
 				LCD.drawChar( oppBoard[col][row].getChar() , col + DIST_OPP_TO_MYBOARD, row + DIST_NAME_TO_BOARD);
 	}
 	
+	public boolean isAlive()
+	{
+		return shipsRemaining > 0;
+	}
 }
