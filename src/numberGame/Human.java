@@ -3,12 +3,14 @@ package numberGame;
 import java.awt.Point;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import javax.bluetooth.RemoteDevice;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 
@@ -79,9 +81,15 @@ public class Human
 	    
 	    LCD.clear();
 	    if( game.isAlive() )
+	    {
 	    	LCD.drawString("YOU WON!!!!", 3, 4);
+	    	Sound.playSample(new File("FF9.wav"));
+	    }
 	    else
+	    {
 	    	LCD.drawString("You suck", 3, 4);
+	    	Sound.systemSound(true, 4);
+	    }
 	    
 	    Thread.sleep(3000);
 	    

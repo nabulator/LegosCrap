@@ -1,9 +1,12 @@
 package numberGame;
 
 import java.awt.Point;
+import java.io.File;
 
 import lejos.nxt.Button;
 import lejos.nxt.LCD;
+import lejos.nxt.Sound;
+import lejos.util.Delay;
 
 /**
  * An interface for each individual player
@@ -47,6 +50,7 @@ public class Player
 		}
 		
 		shipsRemaining = 4;
+		draw();
 	}
 	
 	/**
@@ -138,8 +142,11 @@ public class Player
 		else
 		{
 			myBoard[p.x][p.y] = States.HIT;
+			
 			shipsRemaining--;
 			draw();
+			Sound.playSample(new File("explosion9.wav"));
+			Delay.msDelay(1000);
 			return true;
 		}		
 	}

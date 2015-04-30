@@ -29,8 +29,6 @@ public class Robot
 		DataInputStream dis = connection.openDataInputStream();
 		DataOutputStream dos = connection.openDataOutputStream();
 		
-		System.out.println("THIS iS A ROBOT! ");
-		
 	    game.init();
 	    
 	    Motor.B.setAcceleration(50);
@@ -50,8 +48,8 @@ public class Robot
 	    	
 	    	if(isalreadyhit)
 	    	{
-	    		Motor.B.rotate(180, true);
-	    		Motor.C.rotate(180);
+	    		Motor.B.rotate(260, true);
+	    		Motor.C.rotate(260);
 	    	}
 	    	
 	    	if( ! game.isAlive() )

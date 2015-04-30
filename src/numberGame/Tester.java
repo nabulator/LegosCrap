@@ -1,5 +1,7 @@
 package numberGame;
 
+import java.io.File;
+
 import lejos.nxt.*;
 import lejos.robotics.Color;
 
@@ -12,10 +14,10 @@ public class Tester
 {
 	public static void main(String[] args)
 	{
-		Player test = new Player();
-		test.init();
-		test.myTurn();
-		
+		//Player test = new Player();
+		//test.init();
+		//test.myTurn();
+		System.out.println(Sound.playSample(new File("explosion9.wav")));
 		Button.waitForAnyPress();
 	}
 }
