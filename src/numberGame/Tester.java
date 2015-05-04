@@ -21,4 +21,3 @@ public class Tester
 		Button.waitForAnyPress();
 	}
 }
-d

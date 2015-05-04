@@ -84,6 +84,7 @@ public class Human
 	    {
 	    	LCD.drawString("YOU WON!!!!", 3, 4);
 	    	Sound.playSample(new File("FF9.wav"));
+	    	Sound.systemSound(true, 2);
 	    }
 	    else
 	    {

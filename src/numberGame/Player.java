@@ -138,7 +138,10 @@ public class Player
 	{
 		States s = myBoard[p.x][p.y];
 		if(s == States.EMPTY)
+		{
+			
 			return false;
+		}
 		else
 		{
 			myBoard[p.x][p.y] = States.HIT;
@@ -146,6 +149,7 @@ public class Player
 			shipsRemaining--;
 			draw();
 			Sound.playSample(new File("explosion9.wav"));
+			Sound.systemSound(true, 3);
 			Delay.msDelay(1000);
 			return true;
 		}		
