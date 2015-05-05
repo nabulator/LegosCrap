@@ -1,4 +1,4 @@
-package numberGame;
+package battleShip;
 
 import java.awt.Point;
 import java.io.DataInputStream;

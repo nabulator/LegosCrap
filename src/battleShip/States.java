@@ -1,4 +1,4 @@
-package numberGame;
+package battleShip;
 
 public enum States {
 	

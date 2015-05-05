@@ -1,4 +1,4 @@
-package numberGame;
+package battleShip;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ public class Tester
 		//Player test = new Player();
 		//test.init();
 		//test.myTurn();
-		System.out.println(Sound.playSample(new File("explosion9.wav")));
+		System.out.println(Sound.playSample(new File("FF9.wav")));
 		Button.waitForAnyPress();
 	}
 }
