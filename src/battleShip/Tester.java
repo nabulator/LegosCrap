@@ -1,9 +1,11 @@
 package battleShip;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import lejos.nxt.*;
 import lejos.robotics.Color;
+import mineMapping.SomethingRel;
 
 /**
  * Completely useless GUI tester
@@ -14,38 +16,55 @@ public class Tester
 {
 	public static void main(String[] args) throws InterruptedException
 	{
-		//Player test = new Player();
-		//test.init();
-		//test.myTurn();
-//		System.out.println(Sound.playSample(new File("FF9.wav")));
-		
-		while(true)
+		testGraph();
+	}
+	
+	private static void testGraph()
+	{
+		char[] dirs = { 'r', 'u', 'l', 'd' };
+		ArrayList<String> d = new ArrayList<String>();
+		for( int i=0 ; i<10 ; i++ )
 		{
-			
-
-			if(Button.ENTER.isDown())
-			{
-				Motor.B.rotate(50);
-				Motor.C.rotate(50);
-			}
-			
-			if(Button.RIGHT.isDown())
-			{
-				Motor.B.forward();
-				Motor.C.forward();
-			}
-			if(Button.LEFT.isDown())
-			{
-				System.out.println("B: tacho: " + Motor.B.getTachoCount() + " position: " + Motor.B.getPosition());
-				System.out.println("C: tacho: " + Motor.C.getTachoCount() + " position: " + Motor.C.getPosition());
-				Thread.sleep(400);
-			}
-			if(Button.ESCAPE.isDown() )
-			{
-				Motor.B.resetTachoCount();
-				Motor.C.resetTachoCount();
-			}
+			d.add( String.valueOf((int)(Math.random() * 360) )); //adds distance (taco count)
+			d.add( String.valueOf(( dirs[ (int)(Math.random()*4) ] ) ));
 		}
-//		Button.waitForAnyPress();
+		
+		SomethingRel.graph(d);
+	}
+	
+	private static void testTacos() throws InterruptedException
+	{
+		//Player test = new Player();
+			//test.init();
+				//test.myTurn();
+//				System.out.println(Sound.playSample(new File("FF9.wav")));
+				
+				while(true)
+				{
+					
+					if(Button.ENTER.isDown())
+					{
+						Motor.B.rotate(50);
+						Motor.C.rotate(50);
+					}
+					
+					if(Button.RIGHT.isDown())
+					{
+						Motor.B.forward();
+						Motor.C.forward();
+					}
+					if(Button.LEFT.isDown())
+					{
+						System.out.println("B: tacho: " + Motor.B.getTachoCount() + " position: " + Motor.B.getPosition());
+						System.out.println("C: tacho: " + Motor.C.getTachoCount() + " position: " + Motor.C.getPosition());
+						Thread.sleep(400);
+					}
+					if(Button.ESCAPE.isDown() )
+					{
+						Motor.B.resetTachoCount();
+						Motor.C.resetTachoCount();
+					}
+				}
+//				Button.waitForAnyPress();
 	}
 }

@@ -1,6 +1,7 @@
 package mineMapping;
 
-import java.awt.Point;
+import java.awt.*;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import lejos.nxt.*;
@@ -19,6 +20,7 @@ public class SomethingRel {
 	
 	public static Point pos;
 	public static char dir;
+	private static Rectangle b;
 	
 	public static void main(String[] args) throws InterruptedException 
 	{
@@ -34,6 +36,7 @@ public class SomethingRel {
 		
 		data = new ArrayList<String>();
 		pos = new Point(0, 0);
+		b = new Rectangle(0, 0);
 		dir = 'u';
 		
 		while(!finished())
@@ -77,6 +80,7 @@ public class SomethingRel {
 		
 		changeDir(turn);
 		pos = new Point(x, y);
+		
 	}
 	
 	private static void changeDir(char turn)
@@ -155,5 +159,14 @@ public class SomethingRel {
 	{
 		rightWheel.forward();
 		leftWheel.forward();
+	}
+	
+	/**
+	 * Draws data on NXT
+	 * @param data
+	 */
+	public static void graph( ArrayList<String> data )
+	{
+		
 	}
 }
