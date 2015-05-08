@@ -80,7 +80,9 @@ public class SomethingRel {
 		
 		changeDir(turn);
 		pos = new Point(x, y);
+
 		
+		//ADD POINT
 	}
 	
 	private static void changeDir(char turn)
