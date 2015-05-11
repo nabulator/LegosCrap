@@ -1,7 +1,7 @@
 package mineMapping;
 
 import java.awt.*;
-import java.awt.Rectangle;
+import java.util.Date;
 import java.util.ArrayList;
 
 import lejos.nxt.*;
@@ -17,46 +17,54 @@ public class SomethingRel {
 	private static NXTRegulatedMotor rightWheel = Motor.B;
 	private static NXTRegulatedMotor leftWheel = Motor.C;
 	private static ArrayList<String> data;
+	private static UltrasonicSensor uss;
 	
 	public static Point pos;
 	public static char dir;
-	private static Rectangle b;
+	public static long timeStamp;
+	
+	private static final int MIN_DIS_FROM_WALL = 12;
+	private static final int WALL_ADJ = 3;
 	
 	public static void main(String[] args) throws InterruptedException 
 	{
 		TouchSensor ts = new TouchSensor(SensorPort.S1);
-		UltrasonicSensor uss = new UltrasonicSensor(SensorPort.S2);
+		uss = new UltrasonicSensor(SensorPort.S2);
 		
 		rightWheel.setAcceleration(1000);
 		leftWheel.setAcceleration(1000);
-		
-		final int MIN_DIS_FROM_WALL = 10;
 		
 		moveForward();
 		
 		data = new ArrayList<String>();
 		pos = new Point(0, 0);
-		b = new Rectangle(0, 0);
 		dir = 'u';
-		
+		timeStamp = System.currentTimeMillis();
 		while(!finished())
 		{
-			if(uss.getDistance() > MIN_DIS_FROM_WALL)
+			//left
+			if(uss.getDistance() > MIN_DIS_FROM_WALL + WALL_ADJ)
 			{
 				changeData('l');
 				turnLeft();
 				Thread.sleep(1000);
 			}
 			
+			
+			//right
 			else if(ts.isPressed())
 			{
 				changeData('r');
 				turnRight();
 				Thread.sleep(1000);
+				//adjustment
 			}
 
 			moveForward();
+			
 		}
+		
+		System.out.println(data);
 	}
 	
 	public static void changeData(char turn)
@@ -117,35 +125,43 @@ public class SomethingRel {
 		int x = pos.x;
 		int y = pos.y;
 		
-		return STARTING_RADIUS <= Math.sqrt((x*x) - (y*y));
+		return System.currentTimeMillis() - timeStamp > 5000 && STARTING_RADIUS <= Math.sqrt((x*x) - (y*y));
 	}
 	
 	final static int DEGREES_FOR_TURN = 200;
-	final static int DEGREES_FOR_ADJUSTMENT = 100;
+	final static int DEGREES_FOR_ADJUSTMENT = 180;
 	public static void turnLeft()
 	{
 		stopMoving();
 		
-		leftWheel.rotate(DEGREES_FOR_ADJUSTMENT, true);
-		rightWheel.rotate(DEGREES_FOR_ADJUSTMENT, false);
-
+		rotate(DEGREES_FOR_ADJUSTMENT);
+		
+		rightWheel.setAcceleration(100);
+		leftWheel.setAcceleration(100);
 		leftWheel.rotate(-DEGREES_FOR_TURN, true);
 		rightWheel.rotate(DEGREES_FOR_TURN, false);
+		rightWheel.setAcceleration(1000);
+		leftWheel.setAcceleration(1000);
 		
 		Motor.B.resetTachoCount();
 		Motor.C.resetTachoCount();
+	
+		//SECOND ADJUSTMENT
+		rotate( DEGREES_FOR_ADJUSTMENT * 2 );
 	}
 	
 	public static void turnRight()
 	{
 		stopMoving();
 		
+		rotate(-DEGREES_FOR_ADJUSTMENT);
 		
-		leftWheel.rotate(-DEGREES_FOR_ADJUSTMENT, true);
-		rightWheel.rotate(-DEGREES_FOR_ADJUSTMENT, false);
-		
+		rightWheel.setAcceleration(100);
+		leftWheel.setAcceleration(100);
 		leftWheel.rotate(DEGREES_FOR_TURN, true);
 		rightWheel.rotate(-DEGREES_FOR_TURN, false);
+		rightWheel.setAcceleration(1000);
+		leftWheel.setAcceleration(1000);
 		
 		Motor.B.resetTachoCount();
 		Motor.C.resetTachoCount();
@@ -153,22 +169,28 @@ public class SomethingRel {
 	
 	public static void stopMoving()
 	{
-		rightWheel.stop();
-		leftWheel.stop();
+		rightWheel.stop(true);
+		leftWheel.stop(false);
 	}
 	
 	public static void moveForward()
 	{
-		rightWheel.forward();
-		leftWheel.forward();
+		int dist = uss.getDistance();
+		if(dist > 12)
+			rightWheel.forward();
+		else if(dist < 11 && dist > 8)
+			leftWheel.forward();
+		else
+		{
+			rightWheel.forward();
+			leftWheel.forward();
+		}
 	}
 	
-	/**
-	 * Draws data on NXT
-	 * @param data
-	 */
-	public static void graph( ArrayList<String> data )
+	private static void rotate( int degs )
 	{
-		
+		leftWheel.rotate(degs, true);
+		rightWheel.rotate(degs, false);
 	}
+	
 }
