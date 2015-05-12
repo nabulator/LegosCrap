@@ -29,7 +29,7 @@ public class Tester
 			d.add( String.valueOf(( dirs[ (int)(Math.random()*4) ] ) ));
 		}
 		
-		SomethingRel.graph(d);
+//		SomethingRel.graph(d);
 	}
 	
 	private static void testTacos() throws InterruptedException
@@ -67,4 +67,27 @@ public class Tester
 				}
 //				Button.waitForAnyPress();
 	}
+	
+//	public static void testWobbling()
+//	{
+//		int dist = uss.getDistance();
+//		
+//		//for testing purposes
+//		rightWheel.forward();
+//		leftWheel.forward();
+//
+//		if(dist > MIN_DIS_FROM_WALL + 1)
+//		{
+//			leftWheel.setSpeed( leftWheel.getSpeed()  * 0.5f );			
+//		}
+//		else if(dist < MIN_DIS_FROM_WALL - 1 && dist > MIN_DIS_FROM_WALL - WALL_ADJ) // 3 9
+//		{
+//			rightWheel.setSpeed( rightWheel.getSpeed() * 0.5f );
+//		}
+//		else
+//		{
+//			rightWheel.forward();
+//			leftWheel.forward();
+//		}
+//	}
 }

@@ -61,10 +61,11 @@ public class SomethingRel {
 			}
 
 			moveForward();
-			
+			System.out.println( "Pos X: " + pos.x + " Pos Y: " + pos.y );
 		}
 		
 		System.out.println(data);
+		Button.waitForAnyPress();
 	}
 	
 	public static void changeData(char turn)
@@ -82,14 +83,14 @@ public class SomethingRel {
 		else if(dir == 'd')
 			y-= distance;
 		else if(dir == 'r')
-			y+= distance;
+			x+= distance;
 		else if(dir == 'l')
-			y-= distance;
+			x-= distance;
 		
 		changeDir(turn);
 		pos = new Point(x, y);
 
-		
+		System.out.println( "XX: " + x + " YY: " + y );
 		//ADD POINT
 	}
 	
@@ -128,8 +129,8 @@ public class SomethingRel {
 		return System.currentTimeMillis() - timeStamp > 5000 && STARTING_RADIUS <= Math.sqrt((x*x) - (y*y));
 	}
 	
-	final static int DEGREES_FOR_TURN = 200;
-	final static int DEGREES_FOR_ADJUSTMENT = 180;
+	final static int DEGREES_FOR_TURN = 180;
+	final static int DEGREES_FOR_ADJUSTMENT = 400;
 	public static void turnLeft()
 	{
 		stopMoving();
@@ -175,16 +176,8 @@ public class SomethingRel {
 	
 	public static void moveForward()
 	{
-		int dist = uss.getDistance();
-		if(dist > 12)
-			rightWheel.forward();
-		else if(dist < 11 && dist > 8)
-			leftWheel.forward();
-		else
-		{
-			rightWheel.forward();
-			leftWheel.forward();
-		}
+		rightWheel.forward();
+		leftWheel.forward();
 	}
 	
 	private static void rotate( int degs )
