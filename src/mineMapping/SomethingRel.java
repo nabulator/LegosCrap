@@ -23,7 +23,7 @@ public class SomethingRel {
 	public static char dir;
 	public static long timeStamp;
 	
-	private static final int MIN_DIS_FROM_WALL = 12;
+	private static final int MIN_DIS_FROM_WALL = 18;
 	private static final int WALL_ADJ = 3;
 	
 	public static void main(String[] args) throws InterruptedException 
@@ -40,32 +40,67 @@ public class SomethingRel {
 		pos = new Point(0, 0);
 		dir = 'u';
 		timeStamp = System.currentTimeMillis();
-		while(!finished())
+		
+		int count = 0;
+		final int MAX_COUNTER = 5;
+		while(!finished() && Button.ENTER.isUp())
 		{
-			//left
+			System.out.println( uss.getDistance());
 			if(uss.getDistance() > MIN_DIS_FROM_WALL + WALL_ADJ)
+				count++;
+			
+			//left
+			if(count >= MAX_COUNTER)
 			{
-				changeData('l');
 				turnLeft();
 				Thread.sleep(1000);
+				count = 0;
 			}
-			
-			
 			//right
 			else if(ts.isPressed())
 			{
 				changeData('r');
 				turnRight();
 				Thread.sleep(1000);
-				//adjustment
+				count = 0;
 			}
 
 			moveForward();
-			System.out.println( "Pos X: " + pos.x + " Pos Y: " + pos.y );
 		}
 		
 		System.out.println(data);
-		Button.waitForAnyPress();
+		stopMoving();
+		Thread.sleep(5000);
+		
+		
+		int y = 0;
+		while(Button.ENTER.isUp())
+		{
+			this.draw();
+			LCD.drawChar('/', 0, y);
+
+			if(Button.RIGHT.isDown())
+			{
+				while( Button.RIGHT.isDown() ); //HACKKKKK
+				
+				y++;
+				if(y >= data.size()/2)
+				{
+					y = 0;
+				}
+				
+			}
+			else if(Button.LEFT.isDown())
+			{
+				while( Button.LEFT.isDown() );
+				
+				y--;
+				if(y < 0)
+				{
+					y = data.size()/2;
+				}
+			}
+		}
 	}
 	
 	public static void changeData(char turn)
@@ -126,16 +161,18 @@ public class SomethingRel {
 		int x = pos.x;
 		int y = pos.y;
 		
-		return System.currentTimeMillis() - timeStamp > 5000 && STARTING_RADIUS <= Math.sqrt((x*x) - (y*y));
+		return System.currentTimeMillis() - timeStamp > 5000 && STARTING_RADIUS >= Math.sqrt((x*x) - (y*y));
 	}
 	
 	final static int DEGREES_FOR_TURN = 180;
-	final static int DEGREES_FOR_ADJUSTMENT = 400;
+	final static int DEGREES_FOR_ADJUSTMENT = 110;
 	public static void turnLeft()
 	{
 		stopMoving();
 		
-		rotate(DEGREES_FOR_ADJUSTMENT);
+//		rotate(DEGREES_FOR_ADJUSTMENT);
+		
+		changeData('l');
 		
 		rightWheel.setAcceleration(100);
 		leftWheel.setAcceleration(100);
@@ -148,12 +185,13 @@ public class SomethingRel {
 		Motor.C.resetTachoCount();
 	
 		//SECOND ADJUSTMENT
-		rotate( DEGREES_FOR_ADJUSTMENT * 2 );
+		rotate( DEGREES_FOR_ADJUSTMENT * 6 );
 	}
 	
 	public static void turnRight()
 	{
 		stopMoving();
+		
 		
 		rotate(-DEGREES_FOR_ADJUSTMENT);
 		
