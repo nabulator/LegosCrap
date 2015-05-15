@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import lejos.nxt.*;
 import lejos.robotics.Color;
+import mineMapping.Music;
 import mineMapping.SomethingRel;
 
 /**
@@ -16,7 +17,68 @@ public class Tester
 {
 	public static void main(String[] args) throws InterruptedException
 	{
-		testGraph();
+		testArrayList();
+		testMusic();
+	}
+	
+	private static ArrayList<String> data;
+	
+	private static void printData(int pointer)
+	{
+		for(int i = 0; i < 7; i++)
+			System.out.println("Go: " + data.get((i + pointer)*2) + 
+				" turn:" + data.get((i + pointer)*2 + 1));
+	}
+	
+	private static void testMusic()
+	{
+		Thread d = new Thread(new Music());
+		d.start();
+		Button.waitForAnyPress();
+	}
+	
+	private static void testArrayList()
+	{
+		data = new ArrayList<String>();
+
+		for(int i = 0; i < 10; i++)
+		{
+			data.add(String.valueOf(i));
+			
+			data.add("u");
+		}
+		
+		int pointer = 0;
+		
+		printData(pointer);
+		
+		while(Button.ENTER.isUp())
+		{
+
+			
+			if(Button.RIGHT.isDown())
+			{
+				while( Button.RIGHT.isDown() ); //HACKKKKK
+				
+				if(pointer < data.size()/2 - 7)
+				{
+					pointer++;
+				}
+
+				printData(pointer);
+
+			}
+			else if(Button.LEFT.isDown())
+			{
+				while( Button.LEFT.isDown() );
+				
+				if(pointer > 0)
+				{
+					pointer--;
+				}
+				printData(pointer);
+			}
+		}
 	}
 	
 	private static void testGraph()
