@@ -71,6 +71,8 @@ public class SomethingRel {
 		
 		System.out.println("Done");
 		
+		playMusic();
+		
 		Thread.sleep(4000);
 
 
@@ -106,7 +108,7 @@ public class SomethingRel {
 			}
 		}
 		
-		playMusic();
+
 	}
 
 	public static void changeData(char turn)
@@ -135,10 +137,10 @@ public class SomethingRel {
 
 	private static void printData(int pointer)
 	{
-		if(data.size() < 7)
-			for(int i = 0; i < data.size(); i++)
-				System.out.println("Go: " + data.get((i + pointer)*2) + 
-					" turn:" + data.get((i + pointer)*2 + 1));
+		if(data.size() < 15)
+			for(int i = 0; i < data.size()/2; i++)
+				System.out.println("Go: " + data.get(i * 2) + 
+					" turn:" + data.get((i * 2) + 1));
 		else
 			for(int i = 0; i < 7; i++)
 				System.out.println("Go: " + data.get((i + pointer)*2) + 
@@ -174,15 +176,15 @@ public class SomethingRel {
 
 	public static boolean finished()
 	{
-		final int STARTING_RADIUS= 180;
+		final int STARTING_RADIUS= 100;
 		int x = pos.x;
 		int y = pos.y;
 
-		return System.currentTimeMillis() - timeStamp > 5000 && STARTING_RADIUS >= Math.sqrt((x*x) - (y*y));
+		return System.currentTimeMillis() - timeStamp > 8000 && STARTING_RADIUS >= Math.sqrt((x*x) - (y*y));
 	}
 
 	final static int DEGREES_FOR_TURN = 180;
-	final static int DEGREES_FOR_ADJUSTMENT = 110;
+	final static int DEGREES_FOR_ADJUSTMENT = 200;
 	public static void turnLeft()
 	{
 		stopMoving();
@@ -202,7 +204,7 @@ public class SomethingRel {
 		Motor.C.resetTachoCount();
 
 		//SECOND ADJUSTMENT
-		rotate( DEGREES_FOR_ADJUSTMENT * 6 );
+		rotate(800);
 	}
 
 	public static void turnRight()
@@ -231,6 +233,8 @@ public class SomethingRel {
 
 	public static void moveForward()
 	{
+		rightWheel.setAcceleration(1000);
+		leftWheel.setAcceleration(1000);
 		rightWheel.forward();
 		leftWheel.forward();
 	}
