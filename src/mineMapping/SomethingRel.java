@@ -23,7 +23,7 @@ public class SomethingRel {
 	public static char dir;
 	public static long timeStamp;
 
-	private static final int MIN_DIS_FROM_WALL = 18;
+	private static final int MIN_DIS_FROM_WALL = 23;
 	private static final int WALL_ADJ = 3;
 
 	public static void main(String[] args) throws InterruptedException 
@@ -183,7 +183,7 @@ public class SomethingRel {
 		return System.currentTimeMillis() - timeStamp > 8000 && STARTING_RADIUS >= Math.sqrt((x*x) - (y*y));
 	}
 
-	final static int DEGREES_FOR_TURN = 180;
+	final static int DEGREES_FOR_TURN = 174;
 	final static int DEGREES_FOR_ADJUSTMENT = 200;
 	public static void turnLeft()
 	{
@@ -204,8 +204,10 @@ public class SomethingRel {
 		Motor.C.resetTachoCount();
 
 		//SECOND ADJUSTMENT
-		rotate(800);
+		rotate(830);
 	}
+
+	final static int DEGREES_FOR_RIGHT = 6;
 
 	public static void turnRight()
 	{
@@ -216,8 +218,8 @@ public class SomethingRel {
 
 		rightWheel.setAcceleration(100);
 		leftWheel.setAcceleration(100);
-		leftWheel.rotate(DEGREES_FOR_TURN, true);
-		rightWheel.rotate(-DEGREES_FOR_TURN, false);
+		leftWheel.rotate(DEGREES_FOR_TURN + DEGREES_FOR_RIGHT, true);
+		rightWheel.rotate(-DEGREES_FOR_TURN + DEGREES_FOR_RIGHT, false);
 		rightWheel.setAcceleration(1000);
 		leftWheel.setAcceleration(1000);
 
